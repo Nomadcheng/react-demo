@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      function NumberList(props) {
+        const numbers = props.numbers;
+        // 一个元素的key最好是这个元素在列表中拥有的一个独一无二的字符串。通常，我们使用来自数据的id作为元素的key:
+        const listItems = numbers.map((number) => {
+          <li key={number.toString()}>
+            {number}
+          </li>
+        });
+        return (
+          <ul>{listItems}</ul>
+        )
+      }
+
+      const numbers = [1,2,3,4,5];
+      ReactDOM.render(
+        <NumberList numbers={numbers} />,
+        document.getElementById('root')
+      );
+      //用keys提取组件
+      //比方说，如果你提取出一个ListItem组件，你应该把key保存在数组中的这个<ListItem />元素上，而不是放在ListItem组件中的<li>元素上。
+      function ListItem(props) {
+        //这里不需要明确出Key
+        return <li>{props.value}</li>
+      }
+
+      function NumberList(props) {
+        const numbers = props.numbers;
+        const listItems = numbers.mao((number) =>
+          //key应该在数组中被明确出来
+          <ListItem key={number.toString()}
+                value={number} />
+      );
+        return (
+          <ul>
+            {listItems}
+          </ul>
+        );
+      }
+      const numbers = [1,2,3,4,5];
+      ReactDOM.render(
+        <NumberList numbers={numbers} />,
+        document.getElementById('root')
+      )
+      // 当你在map()方法内部调用的元素时，你最好随时记得为每一个元素加上一个独一无二的key。
+      // 数组元素中使用的key在其兄弟之间应该是独一无二的。然而，它们不需要是全局唯一的。当我们生成两个不同的数组时，我们可以使用相同的键
+      function Blog(props) {
+        const sidebar = (
+          <ul>
+            {props.posts.map((post) =>
+              <li key={post.id}>
+                {post.title}
+              </li>
+            )}
+          </ul>
+        );
+        const content = props.posts.map((post) =>
+          <div key={post.id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+          </div>
+        );
+
+        return (
+          <div>
+            {sidebar}
+            <hr />
+            {content}
+          </div>
+        )
+      }
+
+      const posts = [
+        {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+        {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+      ];
+      ReactDOM.render(
+        <Blog posts={posts} />,
+        document.getElementById('root')
+      );
+
+      // key会作为给React的提示，但不会传递给你的组件。如果您的组件中需要使用和key相同的值，请将其作为属性传递：
+      const content = posts.map((post) =>
+        <Post
+          key={post.id}
+          id={post.id}
+          title={post.title} />
+      )
+      // 上面例子中，Post组件可以读出props.id，但是不能读出props.key
+
+      // 在jsx中嵌入map()
+      // JSX允许在大括号中嵌入任何表达式，所以我们可以在map中这样使用
+      function NumberList(props) {
+        const numbers = props.numbers;
+        return (
+          <ul>
+            {numbers.map((number) =>
+              <ListItem key={number.toSting()}
+                    value=number />
+            )}
+        )
+      }
+    </script>
+  </body>
+</html>

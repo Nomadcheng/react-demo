@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+    function formatName(user) {
+        return user.firstName + ' ' + user.lastName;
+      }
+
+      // const user = {
+      //   firstName: 'Harper',
+      //   lastName: 'Perez'
+      // };
+
+      function getGreeting(user) {
+        if (user) {
+          return <h1>Hello, {formatName(user)}!</h1>;
+        }
+        return <h1>Hello, Stranger.</h1>;
+      }
+      //单个组件
+      function Welcome1(props) {
+        return <h1>Hello, {props.name}</h1>;
+      }
+      const element = <Welcome1 name="Sara" />;
+
+      //组合组件
+      function Welcome2(props) {
+        return <h1>Hello,{props.name}</h1>;
+      }
+
+      function App() {
+        return (
+          <div>
+          <Welcome2 name="a" />
+          <Welcome2 name="b" />
+          <Welcome2 name="c" />
+          </div>
+        )
+      }
+      //组件的返回值只能有一个根元素。这也是我们要用一个<div>来包裹所有<Welcome />元素的原因。
+      //提取组件
+      function Comment(props) {
+        return (
+          <div className="comment">
+            // <div className="userInfo">
+            //   // <img classNmae="Avatar"
+            //   //   src={props.author.avatarUrl}
+            //   //   alt={props.author.name}
+            //   // />
+            //   <Avatar user={props.author} />
+            //   <div className="UserInfo-name">
+            //     {props.author.name}
+            //   </div>
+              <UserInfo-name user={props.author} />
+              <div className="Comment-text">
+                {props.text}
+              </div>
+              <div className="Comment-data">
+                {formatDate(props.date)}
+              </div>
+            </div>
+        );
+      }
+      //这个组件由于嵌套，变得难以被修改，可复用的部分也难以被复用。所以让我们从这个组件中提取出一些小组件。
+      function Avatar(props) {
+        return (
+          <img className="Avatar"
+            src={props.author.avatarUrl}
+            alt={props.author.name}
+          />
+        );
+      }
+      function UserInfo(props) {
+        return (
+          <div className="UserInfo">
+            <Avatar user={props.user} />
+            <div className="UserInfo-name">
+              {props.user.name}
+            </div>
+          </div>
+        )
+      }
+      ReactDOM.render(
+        <App />,
+        <Comment user=""/>,
+        element,
+        <h1>Hello,{getGreeting(user)} world!</h1>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>
