@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-addons-test-utils": "^15.6.2"
+  }
+}
